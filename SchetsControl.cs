@@ -56,7 +56,7 @@ namespace SchetsEditor
         }
         public void VeranderDikte(object obj, EventArgs e)
         {
-            string pendikte = ((TextBox)obj).Text;
+            string pendikte = int.Parse((TextBox)obj).Text;
         }
     }
 }

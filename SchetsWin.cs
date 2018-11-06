@@ -148,7 +148,7 @@ namespace SchetsEditor
             }
         }
 
-        private void maakAktieButtons(String[] kleuren)
+        public void maakAktieButtons(String[] kleuren)
         {   
             paneel = new Panel();
             paneel.Size = new Size(630, 24);
