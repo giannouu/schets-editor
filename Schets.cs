@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace SchetsEditor
 {
     public class Schets
     {
         private Bitmap bitmap;
-        
+        public List<Tekening> tekeningList;
+
         public Schets()
         {
             bitmap = new Bitmap(1, 1);
+            tekeningList = new List<Tekening>();
         }
+
         public Graphics BitmapGraphics
         {
             get { return Graphics.FromImage(bitmap); }
@@ -32,6 +36,11 @@ namespace SchetsEditor
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
+            for (int i = 0; i < tekeningList.Count; i++)
+            {
+                this.tekeningList[i].Teken(gr);
+                Debug.WriteLine(tekeningList[i]);
+            }
         }
         public void Schoon()
         {
@@ -40,6 +49,7 @@ namespace SchetsEditor
         }
         public void Roteer()
         {
+            Schoon();
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
         }
     }

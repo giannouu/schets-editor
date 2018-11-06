@@ -7,68 +7,121 @@ using System.Text;
 namespace SchetsEditor
 {
 
-    abstract class Tekening
+    public abstract class Tekening
     {
-        Point startpunt;
+        public Point startpunt;
+        public Pen pen;
 
-        public abstract void Teken();
+        public abstract void Teken(Graphics g);
+
+        public override string ToString()
+        {
+            return startpunt.X + ", " + startpunt.Y;
+        }
     }
 
-    class TekstTekening : Tekening
+
+    public class TekstTekening : Tekening
     {
-        public override void Teken()
+        public String tekst;
+
+        public TekstTekening(Point p1, Pen pen, String tekst)
+        {
+            this.startpunt = p1;
+            this.pen = pen;
+            this.tekst = tekst;
+        }
+
+        public override void Teken(Graphics g)
         {
 
         }
     }
 
-    class VierkantTekening : Tekening
+    public class VierkantTekening : Tekening
     {
-        Point eindpunt;
+        public Point eindpunt;
 
-        public override void Teken()
+        public VierkantTekening(Point p1, Point p2, Pen pen)
+        {
+            this.startpunt = p1;
+            this.eindpunt = p2;
+            this.pen = pen;
+        }
+
+
+        public override void Teken(Graphics g)
+        {
+            g.DrawRectangle(pen, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
+        }
+    }
+
+    public class VolVierkantTekening : VierkantTekening
+    {
+        public VolVierkantTekening(Point p1, Point p2, Pen pen) : base(p1, p2, pen)
+        {
+
+        }
+
+        public override void Teken(Graphics g)
+        {
+            g.FillRectangle(pen.Brush, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
+        }
+    }
+
+    public class LijnTekening : Tekening
+    {
+        public Point eindpunt;
+
+        public LijnTekening(Point p1, Point p2, Pen pen)
+        {
+            this.startpunt = p1;
+            this.eindpunt = p2;
+            this.pen = pen;
+        }
+
+        public override void Teken(Graphics g)
+        {
+            g.DrawLine(pen, this.startpunt, this.eindpunt);
+        }
+    }
+
+    public class PenTekening : LijnTekening
+    {
+        public PenTekening(Point p1, Point p2, Pen pen) : base(p1, p2, pen)
+        {
+
+        }
+
+        public override void Teken(Graphics g)
         {
 
         }
     }
 
-    class VolVierkantTekening : VierkantTekening
+    public class CirkelTekening : VierkantTekening
     {
-        public override void Teken()
+        public CirkelTekening(Point p1, Point p2, Pen pen) : base(p1, p2, pen)
         {
 
         }
-    }
 
-    class LijnTekening : Tekening
-    {
-        public override void Teken()
+        public override void Teken(Graphics g)
         {
-
+            g.DrawEllipse(pen, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
         }
     }
 
-    class PenTekening : LijnTekening
+    public class VolCirkelTekening : CirkelTekening
     {
-        public override void Teken()
+        public VolCirkelTekening(Point p1, Point p2, Pen pen) : base(p1, p2, pen)
         {
 
         }
-    }
 
-    class CirkelTekening : VierkantTekening
-    {
-        public override void Teken()
+        public override void Teken(Graphics g)
         {
-
-        }
-    }
-
-    class VolCirkelTekening : CirkelTekening
-    {
-        public override void Teken()
-        {
-
+            g.FillEllipse(pen.Brush, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
         }
     }
 }

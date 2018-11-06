@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace SchetsEditor
 {
@@ -20,13 +21,16 @@ namespace SchetsEditor
         public virtual void MuisVast(SchetsControl s, Point p)
         {
             startpunt = p;
+            s.Schoon(null, null);
         }
         public virtual void MuisLos(SchetsControl s, Point p)
         {
             kwast = new SolidBrush(s.PenKleur);
+            s.Schoon(null, null);
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
+        public abstract void addTekening(SchetsControl s, Point p);
     }
 
     public class TekstTool : StartpuntTool
@@ -50,6 +54,17 @@ namespace SchetsEditor
                 startpunt.X += (int)sz.Width;
                 s.Invalidate();
             }
+        }
+
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            this.addTekening(s, this.startpunt);
+        }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new TekstTekening(this.startpunt, new Pen(s.PenKleur), "placeholder"));
         }
     }
 
@@ -82,6 +97,7 @@ namespace SchetsEditor
         {
             base.MuisLos(s, p);
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
+            this.addTekening(s, p);
             s.Invalidate();
         }
         public override void Letter(SchetsControl s, char c)
@@ -101,7 +117,12 @@ namespace SchetsEditor
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
-            g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+            //g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new VierkantTekening(this.startpunt, p, MaakPen(kwast, 3)));
         }
     }
 
@@ -113,6 +134,11 @@ namespace SchetsEditor
         {
             g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new VolVierkantTekening(this.startpunt, p, MaakPen(kwast, 3)));
+        }
     }
 
     public class LijnTool : TweepuntTool
@@ -122,6 +148,11 @@ namespace SchetsEditor
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
             g.DrawLine(MaakPen(this.kwast, 3), p1, p2);
+        }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new LijnTekening(this.startpunt, p, MaakPen(kwast, 3)));
         }
     }
 
@@ -133,6 +164,11 @@ namespace SchetsEditor
         {
             this.MuisLos(s, p);
             this.MuisVast(s, p);
+        }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new PenTekening(this.startpunt, p, MaakPen(kwast, 3)));
         }
     }
 
@@ -154,6 +190,11 @@ namespace SchetsEditor
         {
             g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new CirkelTekening(this.startpunt, p, MaakPen(kwast, 3)));
+        }
     }
 
     public class VolCirkelTool : CirkelTool
@@ -163,6 +204,11 @@ namespace SchetsEditor
         public override void Compleet(Graphics g, Point p1, Point p2)
         {
             g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+        }
+
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.addTekening(new VolCirkelTekening(this.startpunt, p, MaakPen(kwast, 3)));
         }
     }
 }
