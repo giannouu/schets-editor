@@ -43,8 +43,15 @@ namespace SchetsEditor
             return g;
         }
 
+        // Schoon cleart de tijdelijke tekeningen op de bitmap.
         public void Schoon(object o, EventArgs ea)
         {   schets.Schoon();
+            this.Invalidate();
+        }
+
+        public void Clear(object o, EventArgs ea)
+        {
+            schets.Clear();
             this.Invalidate();
         }
 
@@ -79,6 +86,11 @@ namespace SchetsEditor
                     return;
                 }
             }
+        }
+
+        public void updateTekening(Tekening tekening)
+        {
+            this.schets.tekeningList[this.schets.tekeningList.Count - 1] = tekening;
         }
 
     }

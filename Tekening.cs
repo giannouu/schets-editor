@@ -27,6 +27,7 @@ namespace SchetsEditor
     public class TekstTekening : Tekening
     {
         public String tekst;
+        public Size roundedSize;
 
         public TekstTekening(Point p1, Pen pen, String tekst)
         {
@@ -37,12 +38,19 @@ namespace SchetsEditor
 
         public override void Teken(Graphics g)
         {
-
+            g.DrawString(this.tekst, new Font("Tahoma", 40), pen.Brush, this.startpunt, StringFormat.GenericTypographic);
+            SizeF size = g.MeasureString(this.tekst, new Font("Tahoma", 40), this.startpunt, StringFormat.GenericTypographic);
+            this.roundedSize = Size.Round(size);
         }
 
         public override bool isAtPoint(Point p)
         {
-            return false; // TODO
+            return new Rectangle(this.startpunt, roundedSize).Contains(p);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " " + this.tekst;
         }
     }
 

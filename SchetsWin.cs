@@ -116,7 +116,7 @@ namespace SchetsEditor
         private void maakAktieMenu(String[] kleuren)
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
-            menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
+            menu.DropDownItems.Add("Clear", null, schetscontrol.Clear );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
             menu.DropDownItems.Add("Undo", null, schetscontrol.Roteer); // veranderen
             menu.DropDownItems.Add("Redo", null, schetscontrol.Roteer); // 
@@ -157,8 +157,8 @@ namespace SchetsEditor
             Button b; Label l; ComboBox cbb; TextBox tb;
             b = new Button(); 
             b.Text = "Clear";  
-            b.Location = new Point(  0, 0); 
-            b.Click += schetscontrol.Schoon; 
+            b.Location = new Point( 0, 0);
+            b.Click += schetscontrol.Clear;
             paneel.Controls.Add(b);
             
             b = new Button(); 

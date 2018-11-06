@@ -44,15 +44,31 @@ namespace SchetsEditor
                 Debug.WriteLine(tekeningList[i]);
             }
         }
+
+        // Schoon cleart de tijdelijke tekeningen op de bitmap.
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
         }
+
+        public void Clear()
+        {
+            Schoon();
+            tekeningList.Clear();
+        }
+
         public void Roteer()
         {
             Schoon();
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+            Point mid = new Point(bitmap.Width / 2, bitmap.Height / 2);
+
+            for (int i = 0; i < tekeningList.Count; i++)
+            {
+                //tekeningList.Roteer(mid);
+            }
         }
     }
 }
