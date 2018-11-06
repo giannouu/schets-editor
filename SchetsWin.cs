@@ -53,7 +53,7 @@ namespace SchetsEditor
                                     , new VolCirkelTool()
                                     };
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
-                                 , "Yellow", "Magenta", "Cyan" 
+                                 , "Yellow", "Magenta", "Cyan", "Orange", "Violet", "Gray"
                                  };
 
             this.ClientSize = new Size(700, 500);
