@@ -14,6 +14,7 @@ namespace SchetsEditor
         public Schets Schets
         { get { return schets;   }
         }
+
         public SchetsControl()
         {   this.BorderStyle = BorderStyle.Fixed3D;
             this.schets = new Schets();
@@ -52,6 +53,10 @@ namespace SchetsEditor
         public void VeranderKleurViaMenu(object obj, EventArgs ea)
         {   string kleurNaam = ((ToolStripMenuItem)obj).Text;
             penkleur = Color.FromName(kleurNaam);
+        }
+        public void VeranderDikte(object obj, EventArgs e)
+        {
+            string pendikte = ((TextBox)obj).Text;
         }
     }
 }
