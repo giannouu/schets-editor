@@ -202,7 +202,6 @@ namespace SchetsEditor
             tb = new TextBox(); tb.Location = new Point(420, 0);
             tb.Size = new Size(40, 24);
             tb.Text = 3.ToString();
-            tb.TextChanged += schetscontrol.VeranderDikte;
             paneel.Controls.Add(tb);
         }
     }
