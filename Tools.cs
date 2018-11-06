@@ -22,12 +22,10 @@ namespace SchetsEditor
         public virtual void MuisVast(SchetsControl s, Point p)
         {
             startpunt = p;
-            s.Schoon(null, null);
         }
         public virtual void MuisLos(SchetsControl s, Point p)
         {
             kwast = new SolidBrush(s.PenKleur);
-            s.Schoon(null, null);
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
@@ -66,6 +64,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new TekstTekening(this.startpunt, new Pen(s.PenKleur), "placeholder"));
+            s.Schoon(null, null);
         }
     }
 
@@ -124,6 +123,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new VierkantTekening(this.startpunt, p, MaakPen(kwast, 3)));
+            s.Schoon(null, null);
         }
     }
 
@@ -139,6 +139,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new VolVierkantTekening(this.startpunt, p, MaakPen(kwast, 3)));
+            s.Schoon(null, null);
         }
     }
 
@@ -154,6 +155,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new LijnTekening(this.startpunt, p, MaakPen(kwast, 3)));
+            s.Schoon(null, null);
         }
     }
 
@@ -170,6 +172,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new PenTekening(this.startpunt, p, MaakPen(kwast, 3)));
+            s.Schoon(null, null);
         }
     }
 
@@ -192,12 +195,16 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p) { }
         public override void Letter(SchetsControl s, char c) { }
-        public override void addTekening(SchetsControl s, Point p) { }
+        public override void addTekening(SchetsControl s, Point p)
+        {
+            s.Schoon(null, null);
+        }
 
         public override void MuisVast(SchetsControl s, Point p)
         {
             base.MuisVast(s, p);
             s.removeTekening(p);
+            s.Schoon(null, null);
         }
 
     }
@@ -214,6 +221,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new CirkelTekening(this.startpunt, p, MaakPen(kwast, 3)));
+            s.Schoon(null, null);
         }
     }
 
@@ -229,6 +237,7 @@ namespace SchetsEditor
         public override void addTekening(SchetsControl s, Point p)
         {
             s.addTekening(new VolCirkelTekening(this.startpunt, p, MaakPen(kwast, 3)));
+            s.Schoon(null, null);
         }
     }
 }
