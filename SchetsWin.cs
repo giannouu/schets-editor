@@ -53,7 +53,7 @@ namespace SchetsEditor
                                     , new VolCirkelTool()
                                     };
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
-                                 , "Yellow", "Magenta", "Cyan" 
+                                 , "Yellow", "Magenta", "Cyan", "Orange", "Violet", "Gray"
                                  };
 
             this.ClientSize = new Size(700, 500);
@@ -118,6 +118,8 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
+            menu.DropDownItems.Add("Undo", null, schetscontrol.Roteer); // veranderen
+            menu.DropDownItems.Add("Redo", null, schetscontrol.Roteer); // 
             ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
             foreach (string k in kleuren)
                 submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
@@ -149,10 +151,10 @@ namespace SchetsEditor
         private void maakAktieButtons(String[] kleuren)
         {   
             paneel = new Panel();
-            paneel.Size = new Size(600, 24);
+            paneel.Size = new Size(630, 24);
             this.Controls.Add(paneel);
             
-            Button b; Label l; ComboBox cbb;
+            Button b; Label l; ComboBox cbb; TextBox tb;
             b = new Button(); 
             b.Text = "Clear";  
             b.Location = new Point(  0, 0); 
@@ -164,20 +166,44 @@ namespace SchetsEditor
             b.Location = new Point( 80, 0); 
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
-            
+
+            b = new Button();
+            b.Text = "Undo";
+            b.Location = new Point(470, 0);
+            //event
+            paneel.Controls.Add(b);
+
+            b = new Button();
+            b.Text = "Redo";
+            b.Location = new Point(550, 0);
+            //event
+            paneel.Controls.Add(b);
+
             l = new Label();  
             l.Text = "Penkleur:"; 
-            l.Location = new Point(180, 3); 
+            l.Location = new Point(170, 3); 
             l.AutoSize = true;               
             paneel.Controls.Add(l);
-            
-            cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
+
+            cbb = new ComboBox(); cbb.Location = new Point(230, 0); 
             cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
             cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
             foreach (string k in kleuren)
                 cbb.Items.Add(k);
             cbb.SelectedIndex = 0;
             paneel.Controls.Add(cbb);
+
+            l = new Label();
+            l.Text = "Pendikte:";
+            l.Location = new Point(360, 3);
+            l.AutoSize = true;
+            paneel.Controls.Add(l);
+
+            tb = new TextBox(); tb.Location = new Point(420, 0);
+            tb.Size = new Size(40, 24);
+            tb.Text = 3.ToString();
+            tb.TextChanged += schetscontrol.VeranderDikte;
+            paneel.Controls.Add(tb);
         }
     }
 }
