@@ -36,6 +36,8 @@ namespace SchetsEditor
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
+
+            Debug.WriteLine("Items in tekeningList:");
             for (int i = 0; i < tekeningList.Count; i++)
             {
                 this.tekeningList[i].Teken(gr);

@@ -68,5 +68,18 @@ namespace SchetsEditor
         {
             this.schets.tekeningList.Add(tekening);
         }
+
+        public void removeTekening(Point p)
+        {
+            for (int i = schets.tekeningList.Count - 1; i >= 0; i--)
+            {
+                if (schets.tekeningList[i].isAtPoint(p))
+                {
+                    this.schets.tekeningList.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
     }
 }
