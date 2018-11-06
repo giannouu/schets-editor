@@ -118,7 +118,7 @@ namespace SchetsEditor
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
-            //g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+            g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
 
         public override void addTekening(SchetsControl s, Point p)
@@ -168,7 +168,6 @@ namespace SchetsEditor
 
         public override void MuisVast(SchetsControl s, Point p)
         {
-            //base.MuisVast(s, p);
             points = new List<Point>();
             points.Add(p);
         }
