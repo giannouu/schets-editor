@@ -103,20 +103,33 @@ namespace SchetsEditor
         }
     }
 
-    public class PenTekening : LijnTekening
+    public class PenTekening : Tekening
     {
-        public PenTekening(Point p1, Point p2, Pen pen) : base(p1, p2, pen)
-        {
+        public List<Point> points;
 
+        public PenTekening(List<Point> points, Pen pen)
+        {
+            this.points = points;
+            this.pen = pen;
         }
 
         public override void Teken(Graphics g)
         {
-
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                g.DrawLine(pen, points[i], points[i + 1]);
+            }
         }
 
         public override bool isAtPoint(Point p)
         {
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (Math.Abs(points[i].X - p.X) <= 3 && Math.Abs(points[i].Y - p.Y) <= 3)
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }

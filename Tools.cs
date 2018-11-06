@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace SchetsEditor
 {
@@ -161,18 +162,33 @@ namespace SchetsEditor
 
     public class PenTool : LijnTool
     {
+        public List<Point> points;
+
         public override string ToString() { return "pen"; }
+
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            //base.MuisVast(s, p);
+            points = new List<Point>();
+            points.Add(p);
+        }
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            this.MuisLos(s, p);
-            this.MuisVast(s, p);
+            points.Add(p);
+        }
+
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            kwast = new SolidBrush(s.PenKleur);
+            this.addTekening(s, p);
+            s.Invalidate();
         }
 
         public override void addTekening(SchetsControl s, Point p)
         {
-            s.addTekening(new PenTekening(this.startpunt, p, MaakPen(kwast, 3)));
-            s.Schoon(null, null);
+            s.addTekening(new PenTekening(points, MaakPen(kwast, 3)));
+            //s.Schoon(null, null);
         }
     }
 

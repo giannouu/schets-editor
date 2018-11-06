@@ -52,7 +52,7 @@ namespace SchetsEditor
                                     , new CirkelTool()
                                     , new VolCirkelTool()
                                     };
-            String[] deKleuren = { "Black", "Red", "Green", "Blue"
+            String[] deKleuren = { "Black", "White", "Red", "Green", "Blue"
                                  , "Yellow", "Magenta", "Cyan", "Orange", "Violet", "Gray"
                                  };
 
