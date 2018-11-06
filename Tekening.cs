@@ -13,11 +13,13 @@ namespace SchetsEditor
         public Pen pen;
 
         public abstract void Teken(Graphics g);
+        public abstract bool isAtPoint(Point p);
 
         public override string ToString()
         {
             return startpunt.X + ", " + startpunt.Y;
         }
+
     }
 
 
@@ -36,6 +38,11 @@ namespace SchetsEditor
         {
 
         }
+
+        public override bool isAtPoint(Point p)
+        {
+            return false; // TODO
+        }
     }
 
     public class VierkantTekening : Tekening
@@ -53,6 +60,11 @@ namespace SchetsEditor
         public override void Teken(Graphics g)
         {
             g.DrawRectangle(pen, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
+        }
+
+        public override bool isAtPoint(Point p)
+        {
+            return TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt).Contains(p);
         }
     }
 
@@ -84,6 +96,11 @@ namespace SchetsEditor
         {
             g.DrawLine(pen, this.startpunt, this.eindpunt);
         }
+
+        public override bool isAtPoint(Point p)
+        {
+            return false;
+        }
     }
 
     public class PenTekening : LijnTekening
@@ -96,6 +113,11 @@ namespace SchetsEditor
         public override void Teken(Graphics g)
         {
 
+        }
+
+        public override bool isAtPoint(Point p)
+        {
+            return false;
         }
     }
 
@@ -110,6 +132,7 @@ namespace SchetsEditor
         {
             g.DrawEllipse(pen, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
         }
+
     }
 
     public class VolCirkelTekening : CirkelTekening
@@ -123,5 +146,6 @@ namespace SchetsEditor
         {
             g.FillEllipse(pen.Brush, TweepuntTool.Punten2Rechthoek(this.startpunt, this.eindpunt));
         }
+
     }
 }

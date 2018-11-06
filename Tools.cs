@@ -11,6 +11,7 @@ namespace SchetsEditor
         void MuisDrag(SchetsControl s, Point p);
         void MuisLos(SchetsControl s, Point p);
         void Letter(SchetsControl s, char c);
+        void addTekening(SchetsControl s, Point p);
     }
 
     public abstract class StartpuntTool : ISchetsTool
@@ -172,6 +173,9 @@ namespace SchetsEditor
         }
     }
 
+    /**
+     * Oude Gumtool
+     *
     public class GumTool : PenTool
     {
         public override string ToString() { return "gum"; }
@@ -180,6 +184,22 @@ namespace SchetsEditor
         {
             g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
         }
+    } */
+
+    public class GumTool : StartpuntTool
+    {
+        public override string ToString() { return "gum"; }
+
+        public override void MuisDrag(SchetsControl s, Point p) { }
+        public override void Letter(SchetsControl s, char c) { }
+        public override void addTekening(SchetsControl s, Point p) { }
+
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            base.MuisVast(s, p);
+            s.removeTekening(p);
+        }
+
     }
 
     public class CirkelTool : TweepuntTool
