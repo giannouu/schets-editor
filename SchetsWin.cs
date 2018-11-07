@@ -55,6 +55,7 @@ namespace SchetsEditor
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
                                  , "Yellow", "Magenta", "Cyan", "Orange", "Violet", "Gray"
                                  };
+            int[] deDiktes = { 3, 6, 9 };
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
@@ -86,7 +87,7 @@ namespace SchetsEditor
             this.maakToolMenu(deTools);
             this.maakAktieMenu(deKleuren);
             this.maakToolButtons(deTools);
-            this.maakAktieButtons(deKleuren);
+            this.maakAktieButtons(deKleuren, deDiktes);
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
@@ -148,13 +149,13 @@ namespace SchetsEditor
             }
         }
 
-        public void maakAktieButtons(String[] kleuren)
+        public void maakAktieButtons(String[] kleuren, int[] diktes)
         {   
             paneel = new Panel();
             paneel.Size = new Size(630, 24);
             this.Controls.Add(paneel);
             
-            Button b; Label l; ComboBox cbb; TextBox tb;
+            Button b; Label l; ComboBox cbb;
             b = new Button(); 
             b.Text = "Clear";  
             b.Location = new Point(  0, 0); 
@@ -199,10 +200,18 @@ namespace SchetsEditor
             l.AutoSize = true;
             paneel.Controls.Add(l);
 
-            tb = new TextBox(); tb.Location = new Point(420, 0);
+            cbb = new ComboBox(); cbb.Location = new Point(420, 0); cbb.Size = new Size(40, 24);
+            cbb.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbb.SelectedValueChanged += schetscontrol.VeranderDikte;
+            foreach (int d in diktes)
+                cbb.Items.Add(d);
+            cbb.SelectedIndex = 0;
+            paneel.Controls.Add(cbb);
+
+            /*tb = new TextBox(); tb.Location = new Point(420, 0);
             tb.Size = new Size(40, 24);
             tb.Text = 3.ToString();
-            paneel.Controls.Add(tb);
+            paneel.Controls.Add(tb);*/
         }
     }
 }
