@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace SchetsEditor
 {
@@ -26,6 +27,7 @@ namespace SchetsEditor
     public class TekstTekening : Tekening
     {
         public String tekst;
+        public Size roundedSize;
 
         public TekstTekening(Point p1, Pen pen, String tekst)
         {
@@ -36,12 +38,19 @@ namespace SchetsEditor
 
         public override void Teken(Graphics g)
         {
-
+            g.DrawString(this.tekst, new Font("Tahoma", 40), pen.Brush, this.startpunt, StringFormat.GenericTypographic);
+            SizeF size = g.MeasureString(this.tekst, new Font("Tahoma", 40), this.startpunt, StringFormat.GenericTypographic);
+            this.roundedSize = Size.Round(size);
         }
 
         public override bool isAtPoint(Point p)
         {
-            return false; // TODO
+            return new Rectangle(this.startpunt, roundedSize).Contains(p);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " " + this.tekst;
         }
     }
 
@@ -99,24 +108,49 @@ namespace SchetsEditor
 
         public override bool isAtPoint(Point p)
         {
-            return false;
+            int xMin = Math.Min(startpunt.X, eindpunt.X);
+            int xMax = Math.Max(startpunt.X, eindpunt.X);
+            int yMin = Math.Min(startpunt.Y, eindpunt.Y);
+            int yMax = Math.Max(startpunt.Y, eindpunt.Y);
+
+            // ax + b = y
+            double a = ((double) (startpunt.Y - eindpunt.Y)) / (startpunt.X - eindpunt.X);
+            // ax + b = y  -->  b = y - ax
+            double b = startpunt.Y - a * startpunt.X;
+
+            Debug.WriteLine("Hello there.");
+            Debug.WriteLine(Math.Abs(a * p.X + b - p.Y));
+            return (p.X >= xMin) && (p.X <= xMax) && (p.Y >= yMin) && (p.Y <= yMax) && (Math.Abs(a * p.X + b - p.Y) <= 6);
         }
     }
 
-    public class PenTekening : LijnTekening
+    public class PenTekening : Tekening
     {
-        public PenTekening(Point p1, Point p2, Pen pen) : base(p1, p2, pen)
-        {
+        public List<Point> points;
 
+        public PenTekening(List<Point> points, Pen pen)
+        {
+            this.points = points;
+            this.pen = pen;
         }
 
         public override void Teken(Graphics g)
         {
-
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                g.DrawLine(pen, points[i], points[i + 1]);
+            }
         }
 
         public override bool isAtPoint(Point p)
         {
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (Math.Abs(points[i].X - p.X) <= 3 && Math.Abs(points[i].Y - p.Y) <= 3)
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }

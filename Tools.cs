@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace SchetsEditor
 {
@@ -34,23 +35,37 @@ namespace SchetsEditor
 
     public class TekstTool : StartpuntTool
     {
+        public String text = "";
+
         public override string ToString() { return "tekst"; }
 
-        public override void MuisDrag(SchetsControl s, Point p) { }
+        public override void MuisDrag(SchetsControl s, Point p)
+        {
+            this.MuisVast(s, p);
+        }
+
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            base.MuisVast(s, p);
+            this.text = "";
+            this.addTekening(s, this.startpunt);
+        }
 
         public override void Letter(SchetsControl s, char c)
         {
             if (c >= 32)
             {
+                this.text += c.ToString();
+
                 Graphics gr = s.MaakBitmapGraphics();
                 Font font = new Font("Tahoma", 40);
-                string tekst = c.ToString();
                 SizeF sz =
-                gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
-                gr.DrawString(tekst, font, kwast,
+                gr.MeasureString(this.text, font, this.startpunt, StringFormat.GenericTypographic);
+                gr.DrawString(this.text, font, kwast,
                                               this.startpunt, StringFormat.GenericTypographic);
-                // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
-                startpunt.X += (int)sz.Width;
+                //gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
+                //startpunt.X += (int)sz.Width;
+                this.updateTekening(s, this.startpunt);
                 s.Invalidate();
             }
         }
@@ -58,12 +73,17 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {
             base.MuisLos(s, p);
-            this.addTekening(s, this.startpunt);
         }
 
         public override void addTekening(SchetsControl s, Point p)
         {
-            s.addTekening(new TekstTekening(this.startpunt, new Pen(s.PenKleur), "placeholder"));
+            s.addTekening(new TekstTekening(this.startpunt, new Pen(s.PenKleur), this.text));
+            s.Schoon(null, null);
+        }
+
+        public void updateTekening(SchetsControl s, Point p)
+        {
+            s.updateTekening(new TekstTekening(this.startpunt, new Pen(s.PenKleur), this.text));
             s.Schoon(null, null);
         }
     }
@@ -117,7 +137,7 @@ namespace SchetsEditor
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
-            //g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+            g.DrawRectangle(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
 
         public override void addTekening(SchetsControl s, Point p)
@@ -161,18 +181,32 @@ namespace SchetsEditor
 
     public class PenTool : LijnTool
     {
+        public List<Point> points;
+
         public override string ToString() { return "pen"; }
+
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            points = new List<Point>();
+            points.Add(p);
+        }
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            this.MuisLos(s, p);
-            this.MuisVast(s, p);
+            points.Add(p);
+        }
+
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            kwast = new SolidBrush(s.PenKleur);
+            this.addTekening(s, p);
+            s.Invalidate();
         }
 
         public override void addTekening(SchetsControl s, Point p)
         {
-            s.addTekening(new PenTekening(this.startpunt, p, MaakPen(kwast, 3)));
-            s.Schoon(null, null);
+            s.addTekening(new PenTekening(points, MaakPen(kwast, 3)));
+            //s.Schoon(null, null);
         }
     }
 
