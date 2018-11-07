@@ -66,12 +66,10 @@ namespace SchetsEditor
             penkleur = Color.FromName(kleurNaam);
         }
 
-        public void VeranderDikte(object obj, EventArgs ea)
+        public void VeranderDikte(object sender, System.EventArgs e)
         {
-            int pendikte = int.Parse(((ComboBox)obj).Text);
-
+            
         }
-
 
         public void VeranderKleurViaMenu(object obj, EventArgs ea)
         {   string kleurNaam = ((ToolStripMenuItem)obj).Text;
