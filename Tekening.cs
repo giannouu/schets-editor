@@ -4,10 +4,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace SchetsEditor
 {
 
+    [Serializable]
     public abstract class Tekening
     {
         public Point startpunt;
